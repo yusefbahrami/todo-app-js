@@ -97,6 +97,7 @@ function main() {
         card.remove();
       });
     });
+    console.log(deletedIndex);
     removeMulipleTodos(deletedIndex);
   });
 }
@@ -108,10 +109,14 @@ function removeTodo(index) {
 }
 
 function removeMulipleTodos(indexes) {
+  console.log(indexes);
   var todos = JSON.parse(localStorage.getItem("todos"));
-  todos = todos.filter((index) => {
+  console.log(todos); //test
+
+  todos = todos.filter((todo, index) => {
     return !indexes.includes(index);
   });
+  console.log(todos); //test
   localStorage.setItem("todos", JSON.stringify(todos));
 }
 
