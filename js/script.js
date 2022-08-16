@@ -14,15 +14,23 @@ function main() {
   // theme-switcher
   themeSwitcherBtn.addEventListener("click", () => {
     docuemntBody.classList.toggle("light");
-    themeImg.setAttribute(
-      "src",
-      themeImg.getAttribute("src") === "./assets/images/icon-sun.svg"
-        ? "./assets/images/icon-moon.svg"
-        : "./assets/images/icon-sun.svg"
-    );
+    // themeImg.setAttribute(
+    //   "src",
+    //   themeImg.getAttribute("src") === "./assets/images/icon-sun.svg"
+    //     ? "./assets/images/icon-moon.svg"
+    //     : "./assets/images/icon-sun.svg"
+    // );
+    if (docuemntBody.className === "light") {
+      themeImg.setAttribute("src", "./assets/images/icon-moon.svg");
+      localStorage.setItem("isLight", true);
+    } else {
+      themeImg.setAttribute("src", "./assets/images/icon-sun.svg");
+      localStorage.setItem("isLight", false);
+    }
   });
 
   makeTodoElement(JSON.parse(localStorage.getItem("todos")));
+  setTheme();
 
   // dragover event
   ul.addEventListener("dragover", (e) => {
@@ -46,7 +54,6 @@ function main() {
       const todos = JSON.parse(localStorage.getItem("todos"));
       const removedItem = todos.splice(currentPosition, 1);
       todos.splice(newPosition, 0, removedItem[0]);
-      // console.log(todos); //test
       localStorage.setItem("todos", JSON.stringify(todos));
     }
   });
@@ -97,7 +104,6 @@ function main() {
         card.remove();
       });
     });
-    console.log(deletedIndex);
     removeMulipleTodos(deletedIndex);
   });
 }
@@ -109,14 +115,10 @@ function removeTodo(index) {
 }
 
 function removeMulipleTodos(indexes) {
-  console.log(indexes);
   var todos = JSON.parse(localStorage.getItem("todos"));
-  console.log(todos); //test
-
   todos = todos.filter((todo, index) => {
     return !indexes.includes(index);
   });
-  console.log(todos); //test
   localStorage.setItem("todos", JSON.stringify(todos));
 }
 
@@ -126,6 +128,12 @@ function stateTodo(index, isComplete) {
   localStorage.setItem("todos", JSON.stringify(todos));
 }
 
+function setTheme() {
+  const isLight = JSON.parse(localStorage.getItem("isLight"));
+  if (isLight == true) {
+    themeSwitcherBtn.click();
+  }
+}
 function makeTodoElement(todoArray) {
   if (!todoArray) {
     return null;
